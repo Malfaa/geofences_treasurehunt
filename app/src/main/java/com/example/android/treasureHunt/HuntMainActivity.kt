@@ -133,7 +133,8 @@ class HuntMainActivity : AppCompatActivity() {
 
         if (grantResults.isEmpty() ||
             grantResults[LOCATION_PERMISSION_INDEX] == PackageManager.PERMISSION_DENIED ||
-            (requestCode == REQUEST_FOREGROUND_AND_BACKGROUND_PERMISSION_RESULT_CODE && grantResults[BACKGROUND_LOCATION_PERMISSION_INDEX] == PackageManager.PERMISSION_DENIED)){
+            (requestCode == REQUEST_FOREGROUND_AND_BACKGROUND_PERMISSION_RESULT_CODE &&
+                    grantResults[BACKGROUND_LOCATION_PERMISSION_INDEX] == PackageManager.PERMISSION_DENIED)){
             Snackbar.make(binding.activityMapsMain,
                 R.string.permission_denied_explanation,
                 Snackbar.LENGTH_INDEFINITE).setAction(R.string.settings){
@@ -234,7 +235,7 @@ class HuntMainActivity : AppCompatActivity() {
     /*
      *  Requests ACCESS_FINE_LOCATION and (on Android 10+ (Q) ACCESS_BACKGROUND_LOCATION.
      */
-    @TargetApi(29 )
+    @TargetApi(29)
     private fun requestForegroundAndBackgroundLocationPermissions() {
         // TODO: Step 4 add code to request foreground and background permissions
         if (foregroundAndBackgroundLocationPermissionApproved())
@@ -351,3 +352,14 @@ private const val REQUEST_TURN_DEVICE_LOCATION_ON = 29
 private const val TAG = "HuntMainActivity"
 private const val LOCATION_PERMISSION_INDEX = 0
 private const val BACKGROUND_LOCATION_PERMISSION_INDEX = 1
+
+
+/*
+    Resumo:
+
+       Funciona basicamente por pending intents(P.I), ele remove o anterior e coloca o novo (se não
+       remover, ele ocupa espaço e diminui bateria. Os 'Geofences' constants,
+       index, servem para poder retornar onde que se encontra o P.I, iniciando e alterando os
+       valores da posição e do hint atual. O broadcastReceiver faz com que transicione o geofence e
+       notifique o usuário do que houve
+ */
